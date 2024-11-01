@@ -24,8 +24,12 @@ int main() {
     cout << "enter N (1..5): ";
     cin >> nthPerson;
     if ((nthPerson >= 1) && (nthPerson <= 5)) {
-        cout << "The " << nthPerson << "th oldest person lived";
-        cout << oldestPeople.at(nthPerson - 1) << " years.";
+        cout << "The " << nthPerson << "th oldest person lived ";
+        cout << oldestPeople.at(nthPerson - 1) << " years." << endl;
+    } else {
+        cout << "N must be between 1 and 5" << endl;
     }
+
+    return 0;
 }
 
