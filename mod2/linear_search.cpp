@@ -1,20 +1,17 @@
 #include <iostream>
 using namespace std;
 
-int linear_search(vector<int> nums, int x) {
+bool linear_search(vector<int> nums, int x) {
     for (int i = 0; i < nums.size(); i++) {
         if (nums.at(i) == x) {
-            return i;
+            return true;
         }
     }
-    return -1;
+    return false;
 }
 
 int main() {
-    vector<int> data;
-    for (int i = 1; i < 6; i++) {
-        data.push_back(i);
-    }
+    vector<int> data = {1, 2, 3, 4, 5};
     int x = 4;
     cout << linear_search(data, x) << endl;
 }
