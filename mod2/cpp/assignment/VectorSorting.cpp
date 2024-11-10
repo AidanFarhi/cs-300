@@ -122,21 +122,42 @@ vector<Bid> loadBids(string csvPath) {
  */
 int partition(vector<Bid>& bids, int begin, int end) {
     //set low and high equal to begin and end
+    int low = begin;
+    int high = end;
 
     // Calculate the middle element as middlePoint (int)
     // Set Pivot as middlePoint element title to compare (string)  
-  
+    int middlePoint = low + (high - low) / 2;
+    string pivot = bids[middlePoint].title;
+    bool done = false;
+
     // while not done 
+    while (!done) {
 
         // keep incrementing low index while bids[low].title < Pivot
-       
+        while (bids[low].title < pivot) {
+            low++;
+        }
+
         // keep decrementing high index while Pivot < bids[high].title
+        while (pivot < bids[high].title) {
+            high--;
+        }
 
         /* If there are zero or one elements remaining,
             all bids are partitioned. Return high */
-       // else swap the low and high bids (built in vector method)
+        if (low >= high) {
+            done = true;
+        } else {
+            // else swap the low and high bids (built in vector method)
             // move low and high closer ++low, --high
-    //return high;
+            swap(bids[low], bids[high]);
+            low++;
+            high--;
+        }
+    }
+
+    return high;
 }
 
 /**
@@ -150,18 +171,24 @@ int partition(vector<Bid>& bids, int begin, int end) {
  */
 void quickSort(vector<Bid>& bids, int begin, int end) {
     //set mid equal to 0
+    int mid = 0;
 
     /* Base case: If there are 1 or zero bids to sort,
      partition is already sorted otherwise if begin is greater
      than or equal to end then return*/
+    if (bids.size() <= 1 || begin >= end) {
+        return;
+    }
 
     /* Partition bids into low and high such that
      midpoint is location of last element in low */
-     
+    mid = partition(bids, begin, end);
+
     // recursively sort low partition (begin to mid)
+    quickSort(bids, begin, mid);
 
     // recursively sort high partition (mid+1 to end)
-
+    quickSort(bids, mid+1, end);
 }
 
 // FIXME (1a): Implement the selection sort logic over bid.title
@@ -175,19 +202,32 @@ void quickSort(vector<Bid>& bids, int begin, int end) {
  *            instance to be sorted
  */
 void selectionSort(vector<Bid>& bids) {
-    //define min as int (index of the current minimum bid)
+    // initialize a variable to hold the index of the
+    // smallest found value in the vector.
+    size_t min;
 
-    // check size of bids vector
-    // set size_t platform-neutral result equal to bid.size()
+    // set bids_size to size of bids vector.
+    size_t bids_size = bids.size();
 
-    // pos is the position within bids that divides sorted/unsorted
-    // for size_t pos = 0 and less than size -1 
-        // set min = pos
-        // loop over remaining elements to the right of position
-            // if this element's title is less than minimum title
-                // this element becomes the minimum
-        // swap the current minimum with smaller one found
-            // swap is a built in vector method
+    // start the outer loop with pos set to 0.
+    for (size_t pos = 0; pos < bids_size - 1; pos++) {
+
+        // take the current position as the smallest element.
+        min = pos;
+
+        // loop to the end of the vector.
+        for (size_t i = pos+1; i < bids_size; i++) {
+
+            // if i points to a bid that is less than the current min,
+            // reassign min to that index in the vector.
+            if (bids[i].title < bids[min].title) {
+                min = i;
+            }
+
+            // swap the smallest bid with the minimum found in this iteration.
+            swap(bids[min], bids[i]);
+        }
+    }
 }
 
 /**
@@ -259,13 +299,44 @@ int main(int argc, char* argv[]) {
                 displayBid(bids[i]);
             }
             cout << endl;
-
+            cout << endl;
             break;
 
         // FIXME (1b): Invoke the selection sort and report timing results
+        case 3:
+            // Initialize a timer variable before loading bids
+            ticks = clock();
+
+            // Execute selection sort
+            selectionSort(bids);
+
+            // print the number of elements sorted.
+            cout << bids.size() << " bids sorted" << endl;
+
+            // Calculate elapsed time and display result
+            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            cout << "time: " << ticks << " clock ticks" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+            break;
 
         // FIXME (2b): Invoke the quick sort and report timing results
+        case 4:
+            // Initialize a timer variable before loading bids
+            ticks = clock();
 
+            // Execute selection sort
+            quickSort(bids, 0, bids.size() - 1);
+
+            // print the number of elements sorted.
+            cout << bids.size() << " bids sorted" << endl;
+
+            // Calculate elapsed time and display result
+            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            cout << "time: " << ticks << " clock ticks" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+            break;
         }
     }
 
