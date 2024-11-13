@@ -64,3 +64,16 @@ func (ll *LinkedList) Append(data int) {
 	}
 	ll.size++
 }
+
+func (ll LinkedList) IndexOf(data int) (int, error) {
+	n := ll.Head
+	i := 0
+	for n != nil {
+		if n.Data == data {
+			return i, nil
+		}
+		i++
+		n = n.Next
+	}
+	return -1, nil
+}
