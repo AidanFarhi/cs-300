@@ -1,6 +1,9 @@
 package collection
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Node struct {
 	Data int
@@ -75,5 +78,5 @@ func (ll LinkedList) IndexOf(data int) (int, error) {
 		i++
 		n = n.Next
 	}
-	return -1, nil
+	return -1, errors.New("item not found")
 }
