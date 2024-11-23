@@ -57,7 +57,7 @@ void loadCourseNumbers(Set<String> courseNumbers, String filename) {
 /**
     Loads lines of course data from a CSV file into a Vector of Course objects.
 */
-void loadCourses(Vector<Course> courses, String fileName) {
+void loadCourses(HashMap<String, Course> courses, String fileName) {
     open the file
     initialize a Set of Strings to hold course numbers
     call loadCourseNumbers(fileName)
@@ -96,10 +96,10 @@ void loadCourses(Vector<Course> courses, String fileName) {
 }
 
 /**
-    Searches a Vector of Course objects for a given course number.
+    Searches a HashMap of Course objects for a given course number.
     If the course is found, the course information is printed.
 */
-void searchCourse(Vector<Course> courses, String courseNumberToFind) {
+void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
     for every Course object in the courses Vector:
         if the Course.courseNumber equals the courseNumberToFind
             print Course.courseNumber
