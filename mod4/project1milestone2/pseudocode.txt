@@ -92,7 +92,7 @@ void loadCourses(HashMap<String, Course> courses, String fileName) {
                     continue to the next iteration of the while loop
             
             // this only happens if the prerequisites check is successfull
-            add the Course object to the courses Vector
+            add the Course object to the courses HashMap using Course.courseNumber as the key and the Course object as the value
 }
 
 /**
@@ -100,10 +100,13 @@ void loadCourses(HashMap<String, Course> courses, String fileName) {
     If the course is found, the course information is printed.
 */
 void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
-    for every Course object in the courses Vector:
-        if the Course.courseNumber equals the courseNumberToFind
-            print Course.courseNumber
-            print Course.courseName
-            for every prerequisite in the Course.prerequisites Vector:
-                print the prerequisite
+    check if the courses HashMap has a key that matches courseNumberToFind
+    if there is a matching key:
+        get the Course object associated with the courseNumberToFind key
+        print Course.courseNumber
+        print Course.courseName
+        for every prerequisite in the Course.prerequisites Vector:
+            print the prerequisite
+    else:
+        print out message that the course number was not found
 }
