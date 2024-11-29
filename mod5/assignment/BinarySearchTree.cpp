@@ -84,7 +84,24 @@ public:
  * Default constructor
  */
 BinarySearchTree::BinarySearchTree() {
-    root = nullptr;
+    this->root = nullptr;
+}
+
+/**
+ * Recursively deletes all nodes in a Binary Search Tree
+ */
+void deleteTree(Node* n) {
+    // base case
+    if (n == nullptr) return;
+    // grab the left and right nodes as variables
+    Node* left = n->left;
+    Node* right = n->right;
+    // free the memory of the current node
+    delete n;
+    // call function on left node
+    deleteTree(left);
+    // call function on right node
+    deleteTree(right);
 }
 
 /**
@@ -93,6 +110,7 @@ BinarySearchTree::BinarySearchTree() {
 BinarySearchTree::~BinarySearchTree() {
     //FixMe (2)
     // recurse from root deleting every node
+    deleteTree(this->root);
 }
 
 /**
@@ -100,7 +118,8 @@ BinarySearchTree::~BinarySearchTree() {
  */
 void BinarySearchTree::InOrder() {
     // FixMe (3a): In order root
-    // call inOrder fuction and pass root 
+    // call inOrder fuction and pass root
+    inOrder(this->root);
 }
 
 /**
@@ -119,17 +138,18 @@ void BinarySearchTree::PreOrder() {
     // preOrder root
 }
 
-
-
 /**
  * Insert a bid
  */
 void BinarySearchTree::Insert(Bid bid) {
-    // FIXME (6a) Implement inserting a bid into the tree
-    // if root equarl to null ptr
-      // root is equal to new node bid
-    // else
-      // add Node root and bid
+    // if root equal to nullptr
+    if (this->root == nullptr) {
+        // root is equal to new node bid
+        this->root = new Node(bid);
+    } else {
+        // add Node root and bid
+        addNode(this->root, bid);
+    }
 }
 
 /**
@@ -163,24 +183,41 @@ Bid BinarySearchTree::Search(string bidId) {
  * @param bid Bid to be added
  */
 void BinarySearchTree::addNode(Node* node, Bid bid) {
-    // FIXME (6b) Implement inserting a bid into the tree
-    // if node is larger then add to left
+    if (node->bid.bidId == bid.bidId) {       // if node is the same, update the bid
+        node->bid = bid;
+    } else if (node->bid.bidId > bid.bidId) { // if node is larger then add to left
         // if no left node
+        if (node->left == nullptr) {
             // this node becomes left
-        // else recurse down the left node
-    // else
-        // if no right node
-            // this node becomes right
-        //else
+            node->left = new Node(bid);
+        } else {
             // recurse down the left node
+            addNode(node->left, bid);
+        }
+    } else {                                  // if node is smaller add to the right
+        // if no right node
+        if (node->right == nullptr) {
+            // this node becomes right
+            node->right = new Node(bid);
+        } else {
+            // recurse down the right node
+            addNode(node->right, bid);
+        }            
+    }
 }
+
 void BinarySearchTree::inOrder(Node* node) {
-      // FixMe (3b): Pre order root
-      //if node is not equal to null ptr
-      //InOrder not left
-      //output bidID, title, amount, fund
-      //InOder right
+    // base case
+    if (node == nullptr) return;
+    // call inOrder on the left node
+    inOrder(node->left);
+    // output bidID, title, amount, fund
+    cout << node->bid.bidId << ": " << node->bid.title << " | " << node->bid.amount
+    << " | " << node->bid.fund << endl;
+    // call inOrder on the right node
+    inOrder(node->right);
 }
+
 void BinarySearchTree::postOrder(Node* node) {
       // FixMe (4b): Pre order root
       //if node is not equal to null ptr
@@ -379,6 +416,7 @@ int main(int argc, char* argv[]) {
     }
 
     cout << "Good bye." << endl;
+    bst->~BinarySearchTree();
 
 	return 0;
 }
