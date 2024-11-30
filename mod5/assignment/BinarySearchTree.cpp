@@ -166,15 +166,12 @@ Bid BinarySearchTree::Search(string bidId) {
     Node* current = this->root;
     // keep looping downwards until bottom reached or matching bidId found
     while (current != nullptr) {
-        if (current->bid.bidId == bidId) {
-            // if match found, return current bid
+        if (current->bid.bidId == bidId) { // if match found, return current bid
             return current->bid;
-        } else if (current->bid.bidId > bidId) {
-            // current node is greater, traverse left
+        } else if (current->bid.bidId > bidId) { // current node is greater, traverse left
             current = current->left;
         }
-        else {
-            // current node smaller, traverse right
+        else { // current node smaller, traverse right
             current = current->right;
         }
     }
@@ -249,31 +246,72 @@ void BinarySearchTree::preOrder(Node* node) {
 }
 
 /**
+ * Finds the minimum node of a tree or subtree.
+ */
+Node* findMinNode(Node* node) {
+    // traverse down the left side of the tree
+    while (node->left != nullptr) {
+        node = node->left;
+    }
+    return node;
+}
+
+/**
+ * Deletes the minimum node of a tree or subtree.
+ */
+Node* deleteMinNode(Node* node) {
+    // if node is null, return nullptr
+    if (node == nullptr) return nullptr;
+    // if node has no left child, delete the node and return the right node.
+    if (node->left == nullptr) {
+        Node* temp = node->right;
+        delete node;
+        return temp;
+    }
+    // if node has a left child, recursively call until min is found
+    node->left = deleteMinNode(node->left);
+    return node;
+}
+
+/**
  * Remove a bid from some node (recursive)
  */
 Node* BinarySearchTree::removeNode(Node* node, string bidId) {
-    // FIXME (7b) Implement removing a bid from the tree
-    // if node = nullptr return node
+    // if node is null, return node
     if (node == nullptr) return node;
-    // (otherwise recurse down the left subtree)
-    // check for match and if so, remove left node using recursive call 
-    // (otherwise recurse down the right subtree)
-    // check for match and if so, remove right node using recursive call
-    // (otherwise no children so node is a leaf node)
-    // if left node = nullptr && right node = nullptr delete node 
-    // (otherwise check one child to the left)
-    // if left node != nullptr && right node = nullptr delete node 
-    // (otherwise check one child to the right)
-    // if left node = nullptr && right node != nullptr delete node
-    // (otherwise more than one child so find the minimum)
-    // create temp node to right
-    // while left node is not nullptr keep moving temp left
-    // make node bid (right) equal to temp bid (left)
-    // remove right node using recursive call
-    // return node
+
+    // search for a matching bidId in the tree
+    if (bidId < node->bid.bidId) {          // if bid is less than the node's bid, go left
+        node->left = removeNode(node->left, bidId);
+    } else if (bidId > node->bid.bidId) {   // if bid is greater than the node's bid, go right
+        node->right = removeNode(node->right, bidId);
+    } else {                                // the node to delete has been found
+        // case 1: node is a leaf node
+        if (node->left == nullptr && node->right == nullptr) {
+            delete node;
+            return nullptr;
+        }
+        // case 2: node has at least one child
+        if (node->left == nullptr) {
+            Node* temp = node->right;
+            delete node;
+            return temp;
+        }
+        if (node->right == nullptr) {
+            Node* temp = node->left;
+            delete node;
+            return temp;
+        }
+        // case 3: node has two children
+        // first find the minimum node in the right subtree which is the successor
+        Node* successor = findMinNode(node->right);
+        // reassign the current node with the successor's bid
+        node->bid = successor->bid;
+        // delete the successor
+        node->right = deleteMinNode(node->right);
+    }
+    return node;
 }
-
-
 
 //============================================================================
 // Static methods used for testing
