@@ -108,7 +108,6 @@ void deleteTree(Node* n) {
  * Destructor
  */
 BinarySearchTree::~BinarySearchTree() {
-    //FixMe (2)
     // recurse from root deleting every node
     deleteTree(this->root);
 }
@@ -117,8 +116,7 @@ BinarySearchTree::~BinarySearchTree() {
  * Traverse the tree in order
  */
 void BinarySearchTree::InOrder() {
-    // FixMe (3a): In order root
-    // call inOrder fuction and pass root
+    // call inOrder fuction and pass in root
     inOrder(this->root);
 }
 
@@ -126,16 +124,16 @@ void BinarySearchTree::InOrder() {
  * Traverse the tree in post-order
  */
 void BinarySearchTree::PostOrder() {
-    // FixMe (4a): Post order root
-    // postOrder root
+    // call postOrder function and pass in root
+    postOrder(this->root);
 }
 
 /**
  * Traverse the tree in pre-order
  */
 void BinarySearchTree::PreOrder() {
-    // FixMe (5a): Pre order root
-    // preOrder root
+    // call preOrder function and pass in root
+    preOrder(this->root);
 }
 
 /**
@@ -156,22 +154,30 @@ void BinarySearchTree::Insert(Bid bid) {
  * Remove a bid
  */
 void BinarySearchTree::Remove(string bidId) {
-    // FIXME (7a) Implement removing a bid from the tree
     // remove node root bidID
+    removeNode(this->root, bidId);
 }
 
 /**
  * Search for a bid
  */
 Bid BinarySearchTree::Search(string bidId) {
-    // FIXME (8) Implement searching the tree for a bid
-    // set current node equal to root
-
+    // set current node equal to root   
+    Node* current = this->root;
     // keep looping downwards until bottom reached or matching bidId found
-        // if match found, return current bid
-
-        // if bid is smaller than current node then traverse left
-        // else larger so traverse right
+    while (current != nullptr) {
+        if (current->bid.bidId == bidId) {
+            // if match found, return current bid
+            return current->bid;
+        } else if (current->bid.bidId > bidId) {
+            // current node is greater, traverse left
+            current = current->left;
+        }
+        else {
+            // current node smaller, traverse right
+            current = current->right;
+        }
+    }
     Bid bid;
     return bid;
 }
@@ -213,26 +219,33 @@ void BinarySearchTree::inOrder(Node* node) {
     inOrder(node->left);
     // output bidID, title, amount, fund
     cout << node->bid.bidId << ": " << node->bid.title << " | " << node->bid.amount
-    << " | " << node->bid.fund << endl;
+        << " | " << node->bid.fund << endl;
     // call inOrder on the right node
     inOrder(node->right);
 }
 
 void BinarySearchTree::postOrder(Node* node) {
-      // FixMe (4b): Pre order root
-      //if node is not equal to null ptr
-      //postOrder left
-      //postOrder right
-      //output bidID, title, amount, fund
-
+    // base case
+    if (node == nullptr) return;
+    // call postOrder on left node
+    postOrder(node->left);
+    // call postOrder on right node
+    postOrder(node->right);
+    // output bidID, title, amount, fund
+    cout << node->bid.bidId << ": " << node->bid.title << " | " << node->bid.amount
+        << " | " << node->bid.fund << endl;
 }
 
 void BinarySearchTree::preOrder(Node* node) {
-      // FixMe (5b): Pre order root
-      //if node is not equal to null ptr
-      //output bidID, title, amount, fund
-      //postOrder left
-      //postOrder right      
+    // base case
+    if (node == nullptr) return;
+    // output bidID, title, amount, fund
+    cout << node->bid.bidId << ": " << node->bid.title << " | " << node->bid.amount
+        << " | " << node->bid.fund << endl;
+    // call preOrder on left node
+    preOrder(node->left);
+    // call preOrder on right right
+    preOrder(node->right);
 }
 
 /**
@@ -241,6 +254,7 @@ void BinarySearchTree::preOrder(Node* node) {
 Node* BinarySearchTree::removeNode(Node* node, string bidId) {
     // FIXME (7b) Implement removing a bid from the tree
     // if node = nullptr return node
+    if (node == nullptr) return node;
     // (otherwise recurse down the left subtree)
     // check for match and if so, remove left node using recursive call 
     // (otherwise recurse down the right subtree)
