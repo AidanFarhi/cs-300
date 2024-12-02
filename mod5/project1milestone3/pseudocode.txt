@@ -1,39 +1,34 @@
-/**
-    Course object definition.
-*/
+/* Course object definition. */
 Struct Course {
     String courseNumber
     String courseName
     Vector<String> prerequisites
 }
 
-/**
-    Get's a field from a comma separated String.
-*/
+/* Get's a field from a comma separated String. */
 String getField(string line) {
     get the index of the first comma in the line
     get a substring starting at position zero until the index of the first comma
     return the substring
 }
 
-/**
-    Checks whether the given line is valid.
-*/
+/* Checks whether the given line is valid. */
 Boolean isValidLine(String line) {
-    initialize a Vector of Integers to hold indexes
+    initialize a Vector of Integers to hold indexes of commas
 
     // collect all indexes of comma occurences in the line
     for every character in the line:
         if the character is a comma:
             add the current index to the Vector of indexes
 
-    // there must be at least one comma for the line to be valid
+    // there must be at least one comma for the line to be valid.
+    // one comma means there are potentially two fields.
     if the size of the Vector of indexes is greater than or equal to one:
         for every index in the Vector of indexes:
-            // this handles the case where the last field is empty
+            // this handles the case when the last field of the line is empty.
             if the index is equal to the length of the line minus one:
                 return False
-            // this handles the case where a field is empty
+            // this handles the case where a field is empty within the line.
             if the character in the line at position index plus one is a comma:
                 return False
         return True
@@ -41,9 +36,7 @@ Boolean isValidLine(String line) {
         return False
 }
 
-/**
-    Loads course numbers from a file into a Set of strings.
-*/
+/* Loads course numbers from a file into a Set of strings. */
 void loadCourseNumbers(Set<String> courseNumbers, String filename) {
     open the file
     while the file has a next line:
@@ -54,10 +47,8 @@ void loadCourseNumbers(Set<String> courseNumbers, String filename) {
             add the String to the courseNumbers Set
 }
 
-/**
-    Loads lines of course data from a CSV file into a Vector of Course objects.
-*/
-void loadCourses(HashMap<String, Course> courses, String fileName) {
+/* Loads lines of course data from a CSV file into a BinarySearchTree of Course objects. */
+void loadCourses(BinarySearchTree<Course> courses, String fileName) {
     open the file
     initialize a Set of Strings to hold course numbers
     call loadCourseNumbers(fileName)
@@ -89,24 +80,30 @@ void loadCourses(HashMap<String, Course> courses, String fileName) {
             // validate that the prerequisites are existing courses
             for every course number in the Course.prerequisites Vector:
                 if the course number does not exist in the course numbers Set:
+                    // this effectively skips the loading of this Course object
+                    // into the BinarySearchTree because the prerequisites check failed
                     continue to the next iteration of the while loop
             
             // this only happens if the prerequisites check is successfull
-            add the Course object to the courses HashMap using Course.courseNumber as the key and the Course object as the value
+            insert the Course object into the courses BinarySearchTree
 }
 
 /**
-    Searches a HashMap of Course objects for a given course number.
-    If the course is found, the course information is printed.
+* Searches a BinarySearchTree of Course objects for a given course number.
+* If the course is found, the course information is printed, else a course
+* not found message is printed.
 */
-void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
-    check if the courses HashMap has a key that matches courseNumberToFind
-    if there is a matching key:
-        get the Course object associated with the courseNumberToFind key
-        print Course.courseNumber
-        print Course.courseName
-        for every prerequisite in the Course.prerequisites Vector:
-            print the prerequisite
-    else:
-        print out message that the course number was not found
+void searchCourse(BinarySearchTree<Course> courses, String courseNumberToFind) {
+    store a reference to the root node of the tree in a variable
+    while the node reference is not NULL:
+        if the node's course number is less than the courseNumberToFind:
+            update the node reference to point to node.left
+        else if the node's course number is greater than the courseNumberToFind:
+            update the node reference to point to node.right
+        else:
+            if the node's course number matches the courseNumberToFind:
+                print out the course information
+                return
+    // this will only print if a matching course was not found
+    print that the course was not found
 }
