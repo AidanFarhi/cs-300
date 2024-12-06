@@ -1,0 +1,112 @@
+/**
+    Course object definition.
+*/
+Struct Course {
+    String courseNumber
+    String courseName
+    Vector<String> prerequisites
+}
+
+/**
+    Get's a field from a comma separated String.
+*/
+String getField(string line) {
+    get the index of the first comma in the line
+    get a substring starting at position zero until the index of the first comma
+    return the substring
+}
+
+/**
+    Checks whether the given line is valid.
+*/
+Boolean isValidLine(String line) {
+    initialize a Vector of Integers to hold indexes
+
+    // collect all indexes of comma occurences in the line
+    for every character in the line:
+        if the character is a comma:
+            add the current index to the Vector of indexes
+
+    // there must be at least one comma for the line to be valid
+    if the size of the Vector of indexes is greater than or equal to one:
+        for every index in the Vector of indexes:
+            // this handles the case where the last field is empty
+            if the index is equal to the length of the line minus one:
+                return False
+            // this handles the case where a field is empty
+            if the character in the line at position index plus one is a comma:
+                return False
+        return True
+    else:
+        return False
+}
+
+/**
+    Loads course numbers from a file into a Set of strings.
+*/
+void loadCourseNumbers(Set<String> courseNumbers, String filename) {
+    open the file
+    while the file has a next line:
+        read the next line into a String
+        call isValidLine(line)
+        if the line is valid:
+            call getField(line) and store the resulting String
+            add the String to the courseNumbers Set
+}
+
+/**
+    Loads lines of course data from a CSV file into a Vector of Course objects.
+*/
+void loadCourses(HashMap<String, Course> courses, String fileName) {
+    open the file
+    initialize a Set of Strings to hold course numbers
+    call loadCourseNumbers(fileName)
+
+    // iterate through all the lines of the file
+    while the file has a next line:
+        read the next line into a String
+        call isValidLine(line)
+
+        if the line is valid:
+            initialize an empty Course object
+
+            // first get the course number
+            call getField(line) and store the resulting String
+            store the String in Course.courseNumber of the Course object
+            slice off the front of the line up to the first comma, including the comma
+
+            // next get the course name
+            call getField(line) and store the resulting String
+            store the String in Course.courseName of the Course object
+            slice off the front of the line up to the first comma, including the comma
+
+            // add the prerequisites if there are any
+            while the length of the line is greater than zero:
+                call getField(line) and store the resulting course number String
+                append the String to Course object's Vector of prerequisites
+                slice off the front of the line up to the first comma, including the comma
+
+            // validate that the prerequisites are existing courses
+            for every course number in the Course.prerequisites Vector:
+                if the course number does not exist in the course numbers Set:
+                    continue to the next iteration of the while loop
+            
+            // this only happens if the prerequisites check is successfull
+            add the Course object to the courses HashMap using Course.courseNumber as the key and the Course object as the value
+}
+
+/**
+    Searches a HashMap of Course objects for a given course number.
+    If the course is found, the course information is printed.
+*/
+void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
+    check if the courses HashMap has a key that matches courseNumberToFind
+    if there is a matching key:
+        get the Course object associated with the courseNumberToFind key
+        print Course.courseNumber
+        print Course.courseName
+        for every prerequisite in the Course.prerequisites Vector:
+            print the prerequisite
+    else:
+        print out message that the course number was not found
+}
