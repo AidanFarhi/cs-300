@@ -50,8 +50,8 @@ void loadCourseNumbers(Set<String> courseNumbers, String filename) {
 /* Loads lines of course data from a CSV file into a Vector of Course objects. */
 void loadCourses(HashMap<String, Course> courses, String fileName) {
     open the file
-    initialize a Set of Strings to hold course numbers
-    call loadCourseNumbers(fileName)
+    initialize a Set of Strings to hold course numbers called courseNumbers
+    call loadCourseNumbers(courseNumbers, fileName)
 
     // iterate through all the lines of the file
     while the file has a next line:
