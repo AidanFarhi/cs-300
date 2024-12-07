@@ -106,12 +106,15 @@ void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
 }
 
 /* Prints all CS Courses in alphanumeric order */
-void printCSCourses(HashMap<String, Course> courses) {
-    // perform an in-order traversal of the tree
-    for course in courses.InOrder():
-        // only print out CS courses
-        if course starts with "CSCI":
-            print out the course information
+void printCSCourses(HashMap<String, Course> courses courses) {
+    initialize a Vector of Strings to hold the course numbers called courseNumbers
+    // use language specific method or function to get a list of keys
+    for key in courses.Keys():
+        add key to courseNumbers Vector
+    // use language specific method or function to sort the Vector
+    courseNumbers.Sort()
+    for courseNumber in courseNumbers:
+        print courseNumber
 }
 
 /** 
