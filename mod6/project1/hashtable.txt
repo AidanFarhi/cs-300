@@ -138,13 +138,9 @@ Boolean handleMenu(HashMap<String, Course> courses, String fileName) {
 
 /* The one and only main function */
 void main() {
-
-    // set up all the initial variables
     initialize a Boolean variable called keepRunning and set to true
     initialize a HashMap object called courses
     initialize a String variable called fileName and store the name of the file
-    
-    // start the main loop
     while keepRunning is true:
         call handleMenu(courses, fileName)
         store return value in keepRunning

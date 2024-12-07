@@ -104,11 +104,13 @@ void searchCourse(Vector<Course> courses, String courseNumberToFind) {
 
 /* Prints all CS Courses in alphanumeric order */
 void printCSCourses(Vector<Course> courses) {
-    // perform an in-order traversal of the tree
-    for course in courses.InOrder():
-        // only print out CS courses
-        if course starts with "CSCI":
-            print out the course information
+    initialize a Vector of Strings to hold the course numbers called courseNumbers
+    for course in courses:
+        add course.courseNumber to courseNumbers Vector
+    // use language specific method or function to sort the Vector
+    courseNumbers.Sort()
+    for courseNumber in courseNumbers:
+        print courseNumber
 }
 
 /** 
@@ -135,13 +137,9 @@ Boolean handleMenu(Vector<Course> courses, String fileName) {
 
 /* The one and only main function */
 void main() {
-
-    // set up all the initial variables
     initialize a Boolean variable called keepRunning and set to true
     initialize a Vector object called courses
     initialize a String variable called fileName and store the name of the file
-    
-    // start the main loop
     while keepRunning is true:
         call handleMenu(courses, fileName)
         store return value in keepRunning
