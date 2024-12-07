@@ -107,3 +107,48 @@ void searchCourse(BinarySearchTree<Course> courses, String courseNumberToFind) {
     // this will only print if a matching course was not found
     print that the course was not found
 }
+
+/* Prints all CS Courses in alphanumeric order */
+void printCSCourses(BinarySearchTree<Course> courses) {
+    // perform an in-order traversal of the tree
+    for course in courses.InOrder():
+        // only print out CS courses
+        if course starts with "CSCI":
+            print out the course information
+}
+
+/** 
+* Prints out a menu, prompts user for input, and handles it.
+* Returns true unless user wants to exit the program.
+*/
+Boolean handleMenu(BinarySearchTree<Course> courses, String fileName) {
+    print menu options
+    get menu choice from user input
+    if menu choice equals 1:
+        call loadCourses(courses, fileName)
+    else if menu choice equals 2:
+        call printCSCourses(courses)
+    else if menu choice equals 3:
+        get courseNumber from user input
+        call searchCourse(courses, courseNumber)
+    else if menu choice equals 9:
+        print goodbye message
+        return false
+    else:
+        print menu option not valid
+    return true
+}
+
+/* The one and only main function */
+void main() {
+
+    // set up all the initial variables
+    initialize a Boolean variable called keepRunning and set to true
+    initialize a BinarySearchTree object called courses
+    initialize a String variable called fileName and store the name of the file
+
+    // start the main loop
+    while keepRunning is true:
+        call handleMenu(courses, fileName)
+        store return value in keepRunning
+}
