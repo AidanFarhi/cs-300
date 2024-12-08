@@ -47,15 +47,15 @@ void loadCourseNumbers(Set<String> courseNumbers, String filename) {
             add the String to the courseNumbers Set
 }
 
-/* Loads lines of course data from a CSV file into a Vector of Course objects. */
-void loadCourses(HashMap<String, Course> courses, String fileName) {
+/* Loads lines of course data from a CSV file into a HashTable of Course objects. */
+void loadCourses(HashTable<String, Course> courses, String fileName) {
     open the file
     initialize a Set of Strings to hold course numbers called courseNumbers
     call loadCourseNumbers(courseNumbers, fileName)
 
     // iterate through all the lines of the file
     while the file has a next line:
-        read the next line into a String
+        read the next line into a String called line
         call isValidLine(line)
 
         if the line is valid:
@@ -80,21 +80,21 @@ void loadCourses(HashMap<String, Course> courses, String fileName) {
             // validate that the prerequisites are existing courses
             for every course number in the Course.prerequisites Vector:
                 // this effectively skips the loading of this Course object
-                // into the HashMap because the prerequisites check failed
+                // into the HashTable because the prerequisites check failed
                 if the course number does not exist in the course numbers Set:
                     continue to the next iteration of the while loop
             
             // this only happens if the prerequisites check is successfull
-            add the Course object to the courses HashMap using Course.courseNumber as the key and the Course object as the value
+            add the Course object to the courses HashTable using Course.courseNumber as the key and the Course object as the value
 }
 
 /**
-* Searches a HashMap of Course objects for a given course number.
+* Searches a HashTable of Course objects for a given course number.
 * If the course is found, the course information is printed, else a course
 * not found message is printed.
 */
-void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
-    check if the courses HashMap has a key that matches courseNumberToFind
+void searchCourse(HashTable<String, Course> courses, String courseNumberToFind) {
+    check if the courses HashTable has a key that matches courseNumberToFind
     if there is a matching key:
         get the Course object associated with the courseNumberToFind key
         print Course.courseNumber
@@ -106,7 +106,7 @@ void searchCourse(HashMap<String, Course> courses, String courseNumberToFind) {
 }
 
 /* Prints all CS Courses in alphanumeric order */
-void printCSCourses(HashMap<String, Course> courses courses) {
+void printCSCourses(HashTable<String, Course> courses courses) {
     initialize a Vector of Strings to hold the course numbers called courseNumbers
     // use language specific method or function to get a list of keys
     for key in courses.Keys():
@@ -121,7 +121,7 @@ void printCSCourses(HashMap<String, Course> courses courses) {
 * Prints out a menu, prompts user for input, and handles it.
 * Returns true unless user wants to exit the program.
 */
-Boolean handleMenu(HashMap<String, Course> courses, String fileName) {
+Boolean handleMenu(HashTable<String, Course> courses, String fileName) {
     print menu options
     get menu choice from user input
     if menu choice equals 1:
@@ -142,7 +142,7 @@ Boolean handleMenu(HashMap<String, Course> courses, String fileName) {
 /* The one and only main function */
 void main() {
     initialize a Boolean variable called keepRunning and set to true
-    initialize a HashMap object called courses
+    initialize a HashTable object called courses
     initialize a String variable called fileName and store the name of the file
     while keepRunning is true:
         call handleMenu(courses, fileName)

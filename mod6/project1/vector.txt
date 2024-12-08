@@ -55,7 +55,7 @@ void loadCourses(Vector<Course> courses, String fileName) {
 
     // iterate through all the lines of the file
     while the file has a next line:
-        read the next line into a String
+        read the next line into a String called line
         call isValidLine(line)
 
         if the line is valid:
