@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <set>
 
 using namespace std;
 
@@ -9,13 +10,55 @@ struct Course {
     vector<string> prerequisites;
 };
 
-int loadCourses(unordered_map<string, Course> courses, string fileName) {
+bool isValidLine(string line) {
+    vector<int> indexes;
+    for (int i = 0; i < line.length(); i++) {
+        if (line[i] == ',') indexes.push_back(i);
+    }
+    if (indexes.size() < 1) return false;
+    return true;
+}
+
+string getField(string line) {
+    return line.substr(0, line.find(','));
+}
+
+void loadCourseNumbers(set<string> courseNumbers, string fileName) {
     ifstream file(fileName);
     string line;
-    int numCourses = 0;
+    string courseNumber;
     while (getline(file, line)) {
-        numCourses++;
-        cout << line << endl;
+        courseNumber = getField(line);
+        courseNumbers.insert(courseNumber);
+    }
+    file.close();
+}
+
+int loadCourses(unordered_map<string, Course> courses, string fileName) {
+    set<string> courseNumbers;
+    loadCourseNumbers(courseNumbers, fileName);
+    string line;
+    int numCourses = 0;
+    ifstream file(fileName);
+    while (getline(file, line)) {
+        cout << "line: " << line << endl;
+        if (isValidLine(line)) {
+            struct Course course;
+            course.courseNumber = getField(line);
+            line = line.substr(line.find(',')+1, line.length());
+            course.courseName = getField(line);
+            line = line.substr(line.find(',')+1, line.length());
+            while (line.length() > 0 && line != ",") {
+                course.prerequisites.push_back(getField(line));
+                line = line.substr(line.find(',')+1, line.length());
+            }
+            cout << "courseNumber: " << course.courseNumber << endl;
+            cout << "courseName: " << course.courseName << endl;
+            cout << "prerequistes:" << endl;
+            for (string p : course.prerequisites) {
+                cout << p << endl;
+            }
+        }
     }
     file.close();
     return numCourses;
