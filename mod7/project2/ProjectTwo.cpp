@@ -3,7 +3,6 @@
 
 using namespace std;
 
-/* Course object definition */
 struct Course {
     string courseNumber;
     string courseName;
@@ -60,12 +59,8 @@ bool handleUserInput(unordered_map<string, Course> courses) {
 }
 
 int main() {
-
-    // initialize data structures
     bool keepRunning = true;
     unordered_map<string, Course> courses;
-
-    // start main loop
     while (keepRunning) {
         printMenu();
         keepRunning = handleUserInput(courses);
