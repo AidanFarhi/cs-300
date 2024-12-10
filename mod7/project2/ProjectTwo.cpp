@@ -4,12 +4,21 @@
 
 using namespace std;
 
+/**
+ * Represents a course with its number, name, and prerequisites.
+ */
 struct Course {
     string courseNumber;
     string courseName;
     vector<string> prerequisites;
 };
 
+/**
+ * Validates if the line contains at least one comma to separate fields.
+ * 
+ * @param line The input line from the file.
+ * @return True if the line is valid, false otherwise.
+ */
 bool isValidLine(string line) {
     vector<int> indexes;
     for (int i = 0; i < line.length(); i++) {
@@ -19,10 +28,22 @@ bool isValidLine(string line) {
     return true;
 }
 
+/**
+ * Extracts the first field from a line until the first comma.
+ * 
+ * @param line The input line from the file.
+ * @return The first field in the line.
+ */
 string getField(string line) {
     return line.substr(0, line.find(','));
 }
 
+/**
+ * Loads course numbers from a file and inserts them into a set.
+ * 
+ * @param courseNumbers A set to store unique course numbers.
+ * @param fileName The name of the file containing course data.
+ */
 void loadCourseNumbers(set<string>& courseNumbers, string fileName) {
     ifstream file(fileName);
     string line;
@@ -34,6 +55,13 @@ void loadCourseNumbers(set<string>& courseNumbers, string fileName) {
     file.close();
 }
 
+/**
+ * Loads courses from a file into an unordered map.
+ *
+ * @param courses An unordered map to store course data.
+ * @param fileName The name of the file containing course data.
+ * @return The number of courses loaded.
+ */
 int loadCourses(unordered_map<string, Course>& courses, string fileName) {
     set<string> courseNumbers;
     loadCourseNumbers(courseNumbers, fileName);
@@ -65,6 +93,11 @@ int loadCourses(unordered_map<string, Course>& courses, string fileName) {
     return numCourses;
 }
 
+/**
+ * Prints the list of all courses in sorted order by course number.
+ * 
+ * @param courses An unordered map containing course data.
+ */
 void printCourses(unordered_map<string, Course> courses) {
     vector<string> courseNumbers;
     for (const auto& pair : courses) {
@@ -76,6 +109,12 @@ void printCourses(unordered_map<string, Course> courses) {
     }
 }
 
+/**
+ * Searches for and displays details of a specific course by course number.
+ * 
+ * @param courses An unordered map containing course data.
+ * @param courseNumber The course number to search for.
+ */
 void findCourse(unordered_map<string, Course> courses, string courseNumber) {
     if (courses.find(courseNumber) != courses.end()) {
         Course course = courses.at(courseNumber);
@@ -92,6 +131,9 @@ void findCourse(unordered_map<string, Course> courses, string courseNumber) {
     }
 }
 
+/**
+ * Prints the menu options for the user.
+ */
 void printMenu() {
     cout << "- Options - " << endl;
     cout << "1. Load courses" << endl;
@@ -100,6 +142,12 @@ void printMenu() {
     cout << "9. Exit the program" << endl;
 }
 
+/**
+ * Handles user input and executes the corresponding functionality.
+ * 
+ * @param courses An unordered map to store course data.
+ * @return True to continue the program, false to exit.
+ */
 bool handleUserInput(unordered_map<string, Course>& courses) {
     bool result = true;
     int choice;
@@ -135,6 +183,11 @@ bool handleUserInput(unordered_map<string, Course>& courses) {
     return result;
 }
 
+/**
+ * Main entry point of the program.
+ * 
+ * @return Exit status of the program.
+ */
 int main() {
     bool keepRunning = true;
     unordered_map<string, Course> courses;
