@@ -41,23 +41,24 @@ int loadCourses(unordered_map<string, Course> courses, string fileName) {
     int numCourses = 0;
     ifstream file(fileName);
     while (getline(file, line)) {
-        cout << "line: " << line << endl;
         if (isValidLine(line)) {
             struct Course course;
             course.courseNumber = getField(line);
             line = line.substr(line.find(',')+1, line.length());
             course.courseName = getField(line);
             line = line.substr(line.find(',')+1, line.length());
-            while (line.length() > 0 && line != ",") {
-                course.prerequisites.push_back(getField(line));
+            while (line.length() > 1 && line != ",") {
+                if (getField(line).length() > 0) course.prerequisites.push_back(getField(line));
+                if (line.find(',') == string::npos) break;
                 line = line.substr(line.find(',')+1, line.length());
             }
-            cout << "courseNumber: " << course.courseNumber << endl;
-            cout << "courseName: " << course.courseName << endl;
-            cout << "prerequistes:" << endl;
             for (string p : course.prerequisites) {
-                cout << p << endl;
+                if (courseNumbers.find(p) == courseNumbers.end()) {
+                    continue;
+                }
             }
+            courses.insert({course.courseNumber, course});
+            numCourses++;
         }
     }
     file.close();
@@ -75,6 +76,7 @@ void printMenu() {
 bool handleUserInput(unordered_map<string, Course> courses) {
     bool result = true;
     int choice;
+    int coursesLoaded = 0;
     string fileName;
     cout << ">";
     cin >> choice;
@@ -82,7 +84,8 @@ bool handleUserInput(unordered_map<string, Course> courses) {
         case 1:
             cout << "Enter file name: ";
             cin >> fileName;
-            loadCourses(courses, fileName);
+            coursesLoaded = loadCourses(courses, fileName);
+            cout << coursesLoaded << " courses loaded" << endl;
             break;
         case 2:
             cout << "printing CS courses" << endl;
