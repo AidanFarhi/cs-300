@@ -76,6 +76,22 @@ void printCourses(unordered_map<string, Course> courses) {
     }
 }
 
+void findCourse(unordered_map<string, Course> courses, string courseNumber) {
+    if (courses.find(courseNumber) != courses.end()) {
+        Course course = courses.at(courseNumber);
+        cout << "Course Number: " << course.courseNumber << endl;
+        cout << "Course Name:   " << course.courseName << endl;
+        cout << "Prerequisites: ";
+        for (int i = 0; i < course.prerequisites.size(); i++) {
+            cout << course.prerequisites.at(i);
+            if (i != course.prerequisites.size() - 1) cout << ", ";
+        }
+        cout << endl;
+    } else {
+        cout << "Course Number " << courseNumber << " not found" << endl;
+    }
+}
+
 void printMenu() {
     cout << "- Options - " << endl;
     cout << "1. Load courses" << endl;
@@ -89,6 +105,7 @@ bool handleUserInput(unordered_map<string, Course>& courses) {
     int choice;
     int coursesLoaded = 0;
     string fileName;
+    string courseNumber;
     cout << ">";
     cin >> choice;
     switch (choice) {
@@ -102,14 +119,17 @@ bool handleUserInput(unordered_map<string, Course>& courses) {
             printCourses(courses);
             break;
         case 3:
-            cout << "finding course" << endl;
+            cout << "Enter course number: ";
+            cin >> courseNumber;
+            transform(courseNumber.begin(), courseNumber.end(), courseNumber.begin(), ::toupper);
+            findCourse(courses, courseNumber);
             break;
         case 9:
-            cout << "goodbye" << endl;
+            cout << "Goodbye!" << endl;
             result = false;
             break;
         default:
-            cout << "invalid option" << endl;
+            cout << "Invalid Option!" << endl;
             break;
     }
     return result;
