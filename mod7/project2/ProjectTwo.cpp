@@ -23,7 +23,7 @@ string getField(string line) {
     return line.substr(0, line.find(','));
 }
 
-void loadCourseNumbers(set<string> courseNumbers, string fileName) {
+void loadCourseNumbers(set<string>& courseNumbers, string fileName) {
     ifstream file(fileName);
     string line;
     string courseNumber;
@@ -34,7 +34,7 @@ void loadCourseNumbers(set<string> courseNumbers, string fileName) {
     file.close();
 }
 
-int loadCourses(unordered_map<string, Course> courses, string fileName) {
+int loadCourses(unordered_map<string, Course>& courses, string fileName) {
     set<string> courseNumbers;
     loadCourseNumbers(courseNumbers, fileName);
     string line;
@@ -65,6 +65,17 @@ int loadCourses(unordered_map<string, Course> courses, string fileName) {
     return numCourses;
 }
 
+void printCourses(unordered_map<string, Course> courses) {
+    vector<string> courseNumbers;
+    for (const auto& pair : courses) {
+        courseNumbers.push_back(pair.first);
+    }
+    sort(courseNumbers.begin(), courseNumbers.end());
+    for (string courseNum : courseNumbers) {
+        cout << courseNum << ", " << courses.find(courseNum)->second.courseName << endl;
+    }
+}
+
 void printMenu() {
     cout << "- Options - " << endl;
     cout << "1. Load courses" << endl;
@@ -73,7 +84,7 @@ void printMenu() {
     cout << "9. Exit the program" << endl;
 }
 
-bool handleUserInput(unordered_map<string, Course> courses) {
+bool handleUserInput(unordered_map<string, Course>& courses) {
     bool result = true;
     int choice;
     int coursesLoaded = 0;
@@ -88,7 +99,7 @@ bool handleUserInput(unordered_map<string, Course> courses) {
             cout << coursesLoaded << " courses loaded" << endl;
             break;
         case 2:
-            cout << "printing CS courses" << endl;
+            printCourses(courses);
             break;
         case 3:
             cout << "finding course" << endl;
